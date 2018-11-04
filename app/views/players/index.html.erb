@@ -1,0 +1,23 @@
+<div class="col-md-12">
+<table class="table table-striped table-dark table-bordered table-sm">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>ELO</th>
+			<th>Games</th>
+			<th>Win Rate</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% @player.each do |player| %>
+			<tr>
+				<td><%= player.name %></td>
+				<td><%= player.elo %></td>
+				<td><%= player.wins + player.losses%></td>
+				<td><%= number_to_percentage(player.wins / (player.wins + player.losses).to_f * 100.0, precision: 0) %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+</div>

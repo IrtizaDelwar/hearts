@@ -1,0 +1,21 @@
+<div class="col-md-12">
+<table class="table table-striped table-dark table-bordered table-sm">
+	<thead>
+		<tr>
+			<th>Game #</th>
+			<th>Winner</th>
+			<th>Losers</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% @game.each do |game| %>
+			<tr>
+				<td><%= game.game_id %></td>
+				<td><%= game.winner %></td>
+				<td><%= game.losers %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+</div>

@@ -1,0 +1,15 @@
+<div class="col-md-12">
+<%= form_for @game do |f| %>
+	<div class="form-group">
+		<%= f.label :winner %>
+        	<%= f.text_field :winner, class: "form-control", :placeholder => 'PlayerA' %>
+	</div>
+	<div class="form-group">
+        	<%= f.label :losers %> <i>(Comma separated list of names)</i>
+		<%= f.text_field :losers, class: "form-control", :placeholder => 'PlayerB,PlayerC,PlayerD' %>
+	</div>
+	<div class="form-group">
+		<%= f.submit "Submit", class: "btn btn-danger"  %>
+	</div>
+<% end %>
+</div>
