@@ -2,6 +2,7 @@
 <%= form_for @game do |f| %>
 	<div class="form-group">
 		<%= f.label :winner %>
+                <%= f.collection_select :winner, Player.order(:name), :id, :name, {}, {required: true, class: 'form-control'} %>
         	<%= f.text_field :winner, class: "form-control", :placeholder => 'PlayerA' %>
 	</div>
 	<div class="form-group">
@@ -12,4 +13,17 @@
 		<%= f.submit "Submit", class: "btn btn-danger"  %>
 	</div>
 <% end %>
+
+<% if @game.errors.full_messages.any? %>
+    <div class="alert alert-danger">
+        <ul>
+            <% @game.errors.full_messages.each do |message| %>
+                <li>
+                    <%= message %>
+                </li>
+            <% end %>
+        </ul>
+    </div>
+<% end %>
+
 </div>

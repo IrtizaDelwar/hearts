@@ -12,7 +12,10 @@
 <% end %>
 </ul>
 <ul class="navbar navbar-nav navbar-right">
-<%= link_to 'games/new', class: 'btn btn-small navbar-btn', style: 'color:#ecf0f1' do %>
+<%= link_to '/players/new', class: 'btn btn-small navar-btn', style: 'color:#ecf0f1' do%>
+        <i class="glyphicon glyphicon-plus"></i> Add Player
+<% end %>
+<%= link_to '/games/new', class: 'btn btn-small navbar-btn', style: 'color:#ecf0f1' do %>
         <i class="glyphicon glyphicon-plus"></i> Add Match
 <% end %>
 </ul>

@@ -3,24 +3,31 @@ class Game < ApplicationRecord
   validates :losers, presence: true
   auto_increment :game_id
   validate :validate_players 
+  validates :elochange, presence: true
 
   def validate_players
+    self.winner = winner.to_s.gsub(/\s+/, "")
     players_array = Array.new
-    players_array << winner.to_s
-    losers_array = losers.to_s.split(",")
+    players_array << winner
+    self.losers = losers.to_s.gsub(/\s+/," ")
+    losers_array = losers.split(",")
     players_array = players_array + losers_array
     if players_array.size != 4
       raise "Invalid player count in game. Expected 4, but was " + players_array.size.to_s + losers.to_s
     end
     validate_players_exist(players_array)
-    calculate_and_update(winner, losers_array)
+    elo_diff = calculate_and_update(winner, losers_array)
+    puts
+    self.elochange = elo_diff.to_s
+    self.save
   end
 
   def validate_players_exist(players)
     players.each do |p|
-      p = p.gsub(/\s+/, "")
       player = Player.find_by name: p
       if player == nil
+        #errors.add(:game_id, "Player " + p + " does not exist. Please add player first.")
+        #raise "Player " + p + " does not exist. Please add player first."
         Player.create({name: p, elo: 1200, wins: 0, losses: 0})
       end
     end
@@ -62,5 +69,6 @@ class Game < ApplicationRecord
       l.losses += 1
       l.save
     end
+    return (winnerNewElo - winnerStartElo)
   end
 end

@@ -12,7 +12,7 @@
 	<tbody>
 		<% @player.each do |player| %>
 			<tr>
-				<td><%= player.name %></td>
+				<td><%= link_to player.name, "/players/" + player.name %></td>
 				<td><%= player.elo %></td>
 				<td><%= player.wins + player.losses%></td>
 				<td><%= number_to_percentage(player.wins / (player.wins + player.losses).to_f * 100.0, precision: 0) %></td>

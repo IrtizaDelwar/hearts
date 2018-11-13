@@ -1,0 +1,26 @@
+<div class="col-md-12">
+<%= form_for @player do |f| %>
+        <div class="form-group">
+                <%= f.label :name %>
+                <%= f.text_field :name, class: "form-control", :placeholder => 'PlayerA' %>
+        </div>
+        <%= f.hidden_field :elo, :value => 1200 %>
+        <%= f.hidden_field :wins, :value => 0 %>
+        <%= f.hidden_field :losses, :value => 0 %>
+        <div class="form-group">
+                <%= f.submit "Submit", class: "btn btn-danger"  %>
+        </div>
+<% end %>
+
+<% if @player.errors.any? %>
+    <div class="alert alert-danger">
+        <ul>
+            <% @player.errors.full_messages.each do |message| %>
+                <li>
+                    <%= message %>
+                </li>
+            <% end %>
+        </ul>
+    </div>
+<% end %>
+</div>

@@ -3,7 +3,7 @@
 	<thead>
 		<tr>
 			<th>Game #</th>
-			<th>Winner</th>
+			<th>Winner (ELO gained)</th>
 			<th>Losers</th>
 		</tr>
 	</thead>
@@ -12,7 +12,7 @@
 		<% @game.each do |game| %>
 			<tr>
 				<td><%= game.game_id %></td>
-				<td><%= game.winner %></td>
+				<td><%= game.winner %> (+<%= game.elochange.to_i %>)</td>
 				<td><%= game.losers %></td>
 			</tr>
 		<% end %>

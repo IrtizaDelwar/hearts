@@ -18,6 +18,6 @@ class GamesController < ApplicationController
 
   private
     def game_params
-      params.require(:game).permit(:game_id, :winner, :losers)
+      params.require(:game).permit(:game_id, :winner, :losers, :elochange)
     end
 end

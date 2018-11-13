@@ -1,0 +1,67 @@
+<div class="col-md-2">
+<div class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading panel-heading-custom">Profile</div>
+<div class="panel-body"><h1><%= @player.name %></h1>
+
+<h2><%= @player.elo %> ELO</h2>
+
+<h3><%= @player.wins %> - <%= @player.losses %> (<%= number_to_percentage(@player.wins / (@player.wins + @player.losses).to_f * 100.0, precision: 0)%>)</h3>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading panel-heading-custom">Head-To-Head Breakdown</div>
+<table class="table table-bordered">
+        <thead>
+                <tr>
+                        <th>Opponent</th>
+                        <th>Record</th>
+                        <th>Win %</th>
+                </tr>
+        </thead>
+<tbody>
+<% @vs_stats.each do |player| %>
+<% if player[1]["wins"] + player[1]["losses"] > 0 %>
+<tr>
+  <td><%= player[0] %></td>
+  <td><%= player[1]["wins"] %> - <%= player[1]["losses"]%></td>
+  <td><%= number_to_percentage(player[1]["wins"] / (player[1]["wins"] + player[1]["losses"]).to_f * 100.0, precision: 0) %></td>
+</tr>
+<% end %>
+<% end %>
+</tbody>
+</table>
+</div>
+</div>
+<div class="col-md-10">
+<div class="panel panel-default">
+<div class="panel-heading panel-heading-custom"> Recent Match History</div>
+<table class="table table-bordered">
+        <thead>
+                <tr>
+                        <th>Date</th>
+                        <th>Winner</th>
+                        <th>Losers</th>
+                        <th>ELO Change</th>
+                </tr>
+        </thead>
+<tbody>
+<% @last5.each do |game| %>
+
+<% color = game.winner == @player.name ? "bg-success" : "bg-danger" %>
+<tr class=<%= color %>>
+  <td><%= Time.at(game.created_at).to_date %></td>
+   <td><%= game.winner %></td>
+   <td><%= game.losers%></td>
+   <% if game.winner == @player.name %>
+     <td>+<%= game.elochange.to_i %></td>
+   <% else %>
+     <td>-<%= game.elochange.to_i / 3 %></td>
+  <% end %>
+</tr>
+<% end %>
+</tbody>
+</table>
+</div>
+</div>
