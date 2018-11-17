@@ -3,13 +3,18 @@
 
 th {
 	background-color: #e74c3c;
-	color: #ecf0f1;
+	color: #17202A;
+}
+
+.italic {
+        font-family: 'Lobster', cursive;
 }
 
 .panel-default > .panel-heading-custom {
         background-image: none;
-        background-color: #e74c3c;
-        color: white;
+        background-color: #17202A;
+        color: #e74c3c;
+        font-weight: bold;
 }
 .navbar {
   background-color: #e74c3c;

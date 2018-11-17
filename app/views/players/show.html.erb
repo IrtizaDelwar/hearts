@@ -2,11 +2,11 @@
 <div class="panel-group">
 <div class="panel panel-default">
 <div class="panel-heading panel-heading-custom">Profile</div>
-<div class="panel-body"><h1><%= @player.name %></h1>
+<div class="panel-body"><h1 class="italic"><%= @player.name %></h1>
 
-<h2><%= @player.elo %> ELO</h2>
+<h2 class="italic"><%= @player.elo %> ELO</h2>
 
-<h3><%= @player.wins %> - <%= @player.losses %> (<%= number_to_percentage(@player.wins / (@player.wins + @player.losses).to_f * 100.0, precision: 0)%>)</h3>
+<h3 class="italic"><%= @player.wins %> - <%= @player.losses %> (<%= number_to_percentage(@player.wins / (@player.wins + @player.losses).to_f * 100.0, precision: 0)%>)</h3>
 </div>
 </div>
 </div>

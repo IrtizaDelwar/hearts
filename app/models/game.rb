@@ -17,9 +17,7 @@ class Game < ApplicationRecord
     end
     validate_players_exist(players_array)
     elo_diff = calculate_and_update(winner, losers_array)
-    puts
     self.elochange = elo_diff.to_s
-    self.save
   end
 
   def validate_players_exist(players)
@@ -27,8 +25,8 @@ class Game < ApplicationRecord
       player = Player.find_by name: p
       if player == nil
         #errors.add(:game_id, "Player " + p + " does not exist. Please add player first.")
-        #raise "Player " + p + " does not exist. Please add player first."
-        Player.create({name: p, elo: 1200, wins: 0, losses: 0})
+        raise "Player " + p + " does not exist. Please add player first."
+        #Player.create({name: p, elo: 1200, wins: 0, losses: 0})
       end
     end
   end

@@ -1,6 +1,15 @@
 class PlayersController < ApplicationController
   def index
-    @player = Player.order('players.elo DESC').all
+    @player = Array.new
+    @unranked_player = Array.new
+    dbPlayer = Player.order('players.elo DESC').all
+    dbPlayer.each do |p|
+      if p.wins + p.losses >= 5
+        @player.push(p)
+      else
+        @unranked_player.push(p)
+      end
+    end
   end
 
   def new

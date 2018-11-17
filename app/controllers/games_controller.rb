@@ -9,8 +9,9 @@ class GamesController < ApplicationController
 
   def create
     @game = Game.new(game_params)
+    puts "TESTING" + game_params.to_s
     if @game.save
-      redirect_to '/games/new'
+      redirect_to '/games/'
     else
       redirect_to '/games/new'
     end
