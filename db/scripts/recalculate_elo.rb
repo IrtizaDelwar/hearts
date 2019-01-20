@@ -9,7 +9,7 @@ Game.all.each do |g|
   players_array = players_array + losers_array
   game = Game.new
   game.validate_players_exist(players_array)
-  elo_diff = game.calculate_and_update(winner, losers_array)
+  elo_diff, table_elo = game.calculate_and_update(winner, losers_array)
   puts "Adding elo"
   puts elo_diff
   g.update_attribute(:elochange, elo_diff)

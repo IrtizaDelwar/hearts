@@ -4,8 +4,9 @@
 <div class="panel-heading panel-heading-custom">Profile</div>
 <div class="panel-body"><h1 class="italic"><%= @player.name %></h1>
 
-<h2 class="italic"><%= @player.elo %> ELO</h2>
-
+<h2 class="italic"><%= @player.elov2.to_i %> ELO</h2>
+<h4 class="italic">Best: <%= @maxElo %></h2>
+<h4 class="italic">Worst: <%= @minElo %></h2>
 <h3 class="italic"><%= @player.wins %> - <%= @player.losses %> (<%= number_to_percentage(@player.wins / (@player.wins + @player.losses).to_f * 100.0, precision: 0)%>)</h3>
 </div>
 </div>
@@ -15,7 +16,7 @@
 <table class="table table-bordered">
         <thead>
                 <tr>
-                        <th>Opponent</th>
+                        <th>vs.</th>
                         <th>Record</th>
                         <th>Win %</th>
                 </tr>
@@ -36,6 +37,8 @@
 </div>
 <div class="col-md-10">
 <div class="panel panel-default">
+<div class="panel-heading panel-heading-custom"> ELO History</div>
+<%= line_chart @eloChart, min:@minElo-10, max:@maxElo+10 %>
 <div class="panel-heading panel-heading-custom"> Recent Match History</div>
 <table class="table table-bordered">
         <thead>
@@ -44,10 +47,11 @@
                         <th>Winner</th>
                         <th>Losers</th>
                         <th>ELO Change</th>
+                        <th>Match ELO</th>
                 </tr>
         </thead>
 <tbody>
-<% @last5.each do |game| %>
+<% @last5.each_with_index do |game, i| %>
 
 <% color = game.winner == @player.name ? "bg-success" : "bg-danger" %>
 <tr class=<%= color %>>
@@ -55,10 +59,11 @@
    <td><%= game.winner %></td>
    <td><%= game.losers%></td>
    <% if game.winner == @player.name %>
-     <td>+<%= game.elochange.to_i %></td>
+     <td>+<%= game.elochange.split(",").map(&:to_i).inject(0, :+) %></td>
    <% else %>
-     <td>-<%= game.elochange.to_i / 3 %></td>
+     <td>-<%= player_index = game.losers.split(",").index(@player.name); game.elochange.split(",")[player_index].to_i %></td>
   <% end %>
+     <td> <%= game.tableelo.split(",").map(&:to_i).inject(0, :+)/4 %></td>
 </tr>
 <% end %>
 </tbody>

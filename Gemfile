@@ -68,3 +68,4 @@ gem 'auto_increment'
 
 gem 'execjs'
 gem 'mini_racer', :platforms => :ruby
+gem 'chartkick'

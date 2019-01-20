@@ -5,6 +5,7 @@
 			<th>Game #</th>
 			<th>Winner (ELO gained)</th>
 			<th>Losers</th>
+                        <th>Match ELO</th>
 		</tr>
 	</thead>
 
@@ -12,8 +13,9 @@
 		<% @game.each do |game| %>
 			<tr>
 				<td><%= game.game_id %></td>
-				<td><%= game.winner %> (+<%= game.elochange.to_i %>)</td>
+				<td><%= game.winner %> (+<%= game.elochange.split(",").map(&:to_i).inject(0, :+) %>)</td>
 				<td><%= game.losers %></td>
+                                <td><%= game.tableelo.split(",").map(&:to_i).inject(0, :+)/4 %></td>
 			</tr>
 		<% end %>
 	</tbody>

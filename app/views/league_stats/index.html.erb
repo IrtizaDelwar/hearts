@@ -1,0 +1,224 @@
+<!-- <div class="container"> -->
+	<div class="row">
+		<div class="col-md-1"></div>
+<div class="col-md-2">
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom"> League Records </div>
+		<table class="table table-bordered">
+<tbody>
+	<tr>
+		<td>Highest ELO</td>
+		<td><%= @elo_max_player %></td>
+		<td><%= @elo_max %></td>
+	</tr>
+	<tr>
+		<td>Lowest ELO</td>
+		<td><%= @elo_min_player %></td>
+		<td><%= @elo_min %></td>
+	</tr>
+	<tr>
+		<td>Largest Win Streak</td>
+		<td><%= @max_win_streak_player %></td>
+		<td><%= @max_win_streak %></td>
+	</tr>
+	<tr>
+		<td>Largest Loss Streak</td>
+		<td><%= @max_lose_streak_player %></td>
+		<td><%= @max_lose_streak %></td>
+	</tr>
+	<tr>
+		<td>Most ELO gained in a game</td>
+		<td><%= @largest_plus_elo[0] %></td>
+		<td>+<%= @largest_plus_elo[1].to_i %></td>
+	</tr>
+	<tr>
+		<td>Most ELO lost in a game</td>
+		<td><%= @largest_minus_elo[0] %></td>
+		<td>-<%= @largest_minus_elo[1].to_i %></td>
+	</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="col-md-8">
+<div class="panel panel-default">
+<div class="panel-heading panel-heading-custom"> League ELO History</div>
+<%= line_chart @players_elo_history, min: @elo_min, max: @elo_max, height: "500px", points: false, ytitle: "ELO" %>
+
+</div>
+</div>
+</div> <!-- row -->
+<div class="row">
+
+<div class="col-md-1"></div>
+<div class="col-md-2"></div>
+<div class="col-md-2">
+	<div class="panel panel-default">
+	<div class="panel-heading panel-heading-custom"> Win Difficulty </div>
+		<%= bar_chart @win_difficulty.sort_by{|x,y|y}.reverse, min: @win_difficulty.select{|p| p[1] > 0}.min_by{|x,y|y}[1] - 10, max: @win_difficulty.max_by{|x,y|y}[1], height: "500px" %>
+	</div>
+</div>
+
+<div class="col-md-2">
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom"> Strength of Schedule </div>
+			<%= bar_chart @player_sos.sort_by{|x,y|y}.reverse, min: @player_sos.min_by{|x,y|y}[1] - 10, max: @player_sos.max_by{|x,y|y}[1], height: "500px" %>
+	</div>
+</div>
+
+<div class="col-md-4">
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom">Wins by ELO rank in match</div>
+			<%= pie_chart @positional_win_rates, adapter: "google", library: {pieSliceText: 'value-and-percentage'}, height: "500px", colors: ['#feb236', '#a2b9bc', '#b2ad7f', '#6b5b95'] %>
+		</div>
+</div>
+</div>
+<!-- row -->
+<div class="row">
+	<div class="col-md-1"></div>
+	<div class="col-md-10">
+				<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom"> Monthly Stats (Min. 5 Games)</div>
+		<table class="table table-striped table-dark table-bordered table-sm">
+				<thead>
+						<tr>
+							<th>Month</th>
+							<th>League Games</th>
+							<th>Best Player W%</th>
+                        	<th>Win %</th>
+                        	<th>Worst Player W%</th>
+                        	<th>Win %</th>
+                        	<th>Best Player ELO</th>
+                        	<th>ELO Diff</th>
+                        	<th>Worst Player ELO</th>
+                        	<th>ELO Diff</th>
+						</tr>
+				</thead>
+
+				<tbody>
+					<% @per_month_stats.each do |p| %>
+						<tr>
+							<td><%= Date::MONTHNAMES[p[0].month] %></td>
+							<td><%= p[1]["count"] %></td>
+							<td><%= p[1]["top"] %></td>
+							<td><%= number_to_percentage(p[1]["winrate"] * 100.0, precision: 0) %></td>
+							<td><%= p[1]["bottom"] %></td>
+							<td><%= number_to_percentage(p[1]["bottom_winrate"] * 100.0, precision: 0) %></td>
+							<td><%= p[1]["top_elo"] %></td>
+							<td>+<%= p[1]["top_elo_diff"].to_i %></td>
+							<td><%= p[1]["bottom_elo"] %></td>
+							<td><%= p[1]["bottom_elo_diff"].to_i %></td>
+						</tr>
+					<% end %>
+				</tbody>
+		</table>
+	</div>
+		
+	</div>
+</div><!-- row -->
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-2">
+		<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom"> Win Rate this month (<%= Date::MONTHNAMES[Date.today.month] %>) </div>
+		<table class="table table-striped table-dark table-bordered table-sm">
+				<thead>
+						<tr>
+							<th>Player</th>
+							<th>Wins</th>
+							<th>Losses</th>
+                        	<th>Win %</th>
+						</tr>
+				</thead>
+
+				<tbody>
+					<% @match_history_this_month.each do |p| %>
+						<tr>
+							<td><%= p[0] %></td>
+							<td><%= p[1]["wins"] %></td>
+							<td><%= p[1]["losses"] %></td>
+							<td><%= number_to_percentage(p[1]["winrate"] * 100.0, precision: 0) %></td>
+						</tr>
+					<% end %>
+				</tbody>
+		</table>
+	</div>
+</div>
+<div class="col-md-2">
+		<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom"> Win Rate last Month (<%= Date::MONTHNAMES[Date.today.ago(1.month).month] %>) </div>
+		<table class="table table-striped table-dark table-bordered table-sm">
+				<thead>
+						<tr>
+							<th>Player</th>
+							<th>Wins</th>
+							<th>Losses</th>
+                        	<th>Win %</th>
+						</tr>
+				</thead>
+
+				<tbody>
+					<% @match_history_last2_months.each do |p| %>
+						<tr>
+							<td><%= p[0] %></td>
+							<td><%= p[1]["wins"] %></td>
+							<td><%= p[1]["losses"] %></td>
+							<td><%= number_to_percentage(p[1]["winrate"] * 100.0, precision: 0) %></td>
+						</tr>
+					<% end %>
+				</tbody>
+		</table>
+	</div>
+</div>
+<div class="col-md-2">
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom"> Win Rate in Matches >= 1200 ELO </div>
+		<table class="table table-striped table-dark table-bordered table-sm">
+				<thead>
+						<tr>
+							<th>Player</th>
+							<th>Wins</th>
+							<th>Losses</th>
+                        	<th>Win %</th>
+						</tr>
+				</thead>
+
+				<tbody>
+					<% @match_history_above_mendoza.each do |p| %>
+						<tr>
+							<td><%= p[0] %></td>
+							<td><%= p[1]["wins"] %></td>
+							<td><%= p[1]["losses"] %></td>
+							<td><%= number_to_percentage(p[1]["winrate"] * 100.0, precision: 0) %></td>
+						</tr>
+					<% end %>
+				</tbody>
+		</table>
+	</div>
+</div>
+<div class="col-md-2">
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom"> Win Rate in Matches < 1200 ELO </div>
+		<table class="table table-striped table-dark table-bordered table-sm">
+				<thead>
+						<tr>
+							<th>Player</th>
+							<th>Wins</th>
+							<th>Losses</th>
+                        	<th>Win %</th>
+						</tr>
+				</thead>
+
+				<tbody>
+					<% @match_history_below_mendoza.each do |p| %>
+						<tr>
+							<td><%= p[0] %></td>
+							<td><%= p[1]["wins"] %></td>
+							<td><%= p[1]["losses"] %></td>
+							<td><%= number_to_percentage(p[1]["winrate"] * 100.0, precision: 0) %></td>
+						</tr>
+					<% end %>
+				</tbody>
+		</table>
+	</div></div>
+</div>
