@@ -1,0 +1,42 @@
+<nav class="navbar navbar-default bg-dark">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand dropdown" data-toggle="dropdown"><i class="glyphicon glyphicon-cd" style="color:#ecf0f1"></i> IAD28 Poker</a>
+			<ul class="dropdown-menu">
+				<%= link_to '/', class: 'btn btn-small navbar-btn', style:'color:#e74c3c' do %>
+        				<i class="glyphicon glyphicon-heart-empty"></i> <b>IAD28 Hearts</b>
+				<% end %>
+			</ul>
+		</div>
+		
+		<div class="navbar-collapse collapse">
+
+				<ul class="nav navbar-nav">
+					<%= link_to '/season_rankings/6', class: 'btn btn-small navbar-btn', style: 'color:#ecf0f1' do %>
+        				<i class="glyphicon glyphicon-sort"></i> Rankings
+					<% end %>
+						
+					<%= link_to '/p_games', class: 'btn btn-small navbar-btn', style: 'color:#ecf0f1' do %>
+        				<i class="glyphicon glyphicon-file"></i> Match History
+					<% end %>
+					<%= link_to '/poker_stats', class: 'btn btn-small navbar-btn', style: 'color:#ecf0f1' do %>
+        				<i class="glyphicon glyphicon-signal"></i> League Stats
+					<% end %>
+					<%= link_to '/tournaments', class: 'btn btn-small navbar-btn', style: 'color:#ecf0f1' do %>
+        				<i class="glyphicon glyphicon-object-align-horizontal"></i> Tournaments
+					<% end %>
+				</ul>
+
+				<ul class="navbar navbar-nav navbar-right">
+					<%= link_to '/poker_players/new', class: 'btn btn-small navar-btn', style: 'color:#ecf0f1' do%>
+        				<i class="glyphicon glyphicon-plus"></i> Add Player
+					<% end %>
+
+					<%= link_to '/p_games/new', class: 'btn btn-small navbar-btn', style: 'color:#ecf0f1' do %>
+        				<i class="glyphicon glyphicon-plus"></i> Add Match
+					<% end %>
+				</ul>
+
+		</div>
+	</div>
+</nav>

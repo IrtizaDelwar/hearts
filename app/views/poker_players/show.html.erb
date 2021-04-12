@@ -1,0 +1,45 @@
+<%= render 'layouts/poker_navbar' %>
+
+
+<div class="col-md-2">
+	<div class="panel-group">
+		<div class="panel panel-default">
+			<div class="panel-heading panel-heading-custom">Profile</div>
+			<div class="panel-body"><h1><%= @player.name %></h1>
+
+
+				<h4>Best: <%= @maxElo %></h2>
+				<h4>Worst: <%= @minElo %></h2>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="col-md-10">
+		<div class="panel panel-default">
+				<div class="panel-heading panel-heading-custom"> ELO History</div>
+				<%= line_chart @eloChart, min:@minElo-10, max:@maxElo+10 %>
+				<div class="panel-heading panel-heading-custom"> Recent Match History</div>
+				<table class="table table-bordered">
+        		<thead>
+                		<tr>
+                        		<th>Game</th>
+                        		<th>Net Cash</th>
+                        		<th>ELO Change</th>
+                		</tr>
+        		</thead>
+				<tbody>
+
+				<% @net_cash.each_with_index do |net, i| %>
+
+				<% color = net[1] > 0 ? "bg-success" : "bg-danger" %>
+				<tr class=<%= color %>>
+  					<td><%= link_to (net[2] - 5), "/p_games/" + net[2].to_s %></td>
+   					<td><%= net[1] %></td>
+   					<td><%= net[0] %></td>
+				</tr>
+				<% end %>
+				</tbody>
+				</table>
+		</div>
+</div>

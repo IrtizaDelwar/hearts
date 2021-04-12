@@ -1,0 +1,34 @@
+<%= render 'layouts/poker_navbar' %>
+
+<div class="col-md-12">
+<%= simple_form_for(@game) do |f| %>
+	<%= f.error_notification %>
+
+	<div class="form-inputs">
+	</div>
+
+	<table class='table'>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Buy In </th>
+				<th>Cash Out </th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody class='cashout'>
+			<%= f.simple_fields_for :cash_out do |builder| %>
+				<%= render 'cash_out_fields', f: builder %>
+			<% end %>
+		</tbody>
+
+	</table>
+
+	<div class="form-actions">
+		<%= link_to_add_association 'Add Player', f, :cash_out, class: 'btn btn-danger', data: {
+			association_insertion_node: '.cashout', association_insertion_method: :append } %>
+			<br><br>
+			<%= f.button :submit, 'Create Game', class: 'btn btn-danger' %>
+	</div>
+<% end %>
+</div>

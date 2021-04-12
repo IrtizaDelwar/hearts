@@ -1,0 +1,63 @@
+<%= render 'layouts/poker_navbar' %>
+<div class="col-md-12">
+
+<%= link_to "Season 1 Standings", '/season_rankings/1', class: "btn btn-danger", :method => "get" %>
+<%= link_to "Season 2 Standings", '/season_rankings/2', class: "btn btn-danger", :method => "get" %>
+<%= link_to "Season 3 Standings", '/season_rankings/3', class: "btn btn-danger", :method => "get" %>
+<%= link_to "Season 4 Standings", '/season_rankings/4', class: "btn btn-danger", :method => "get" %>
+<%= link_to "Season 5 Standings", '/season_rankings/5', class: "btn btn-danger", :method => "get" %>
+<%= link_to "Season 6 Standings", '/season_rankings/6', class: "btn btn-danger", :method => "get" %>
+<%= link_to "All Time Standings", '/season_rankings/all', class: "btn btn-danger", :method => "get" %>
+
+<br></br>
+<div class="panel panel-default">
+<div class="panel-heading panel-heading-custom"><center>Season <%= @season %> Standings</center></div>
+<table class="table table-striped table-dark table-bordered table-sm">
+	<thead>
+		<tr>
+            <th>Rank</th>
+            <th>Name</th>
+			<th>ELO</th>
+            <th>Avg</th>
+            <th>Max</th>
+			<th>Last 1</th>
+			<th>5</th>
+			<th>10</th>
+<!-- 			<th>ELOv1</th> -->
+			<th>Net Cash Out </th>
+			<th>Games</th>
+			<th>Avg. Gain (Per Buy In)</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% @stats.each_with_index do |player, index| %>
+			<tr>
+                <td><%= index + 1 %></td>
+                <% if player[0] == "Tyler" || player[0] == "Irtiza" %>
+     				<td><%= link_to player[0], "/poker_players/" + player[0] %> 👑🏆 </td>
+     			<% elsif player[0] == "Ding" || player[0] == "Joe" || player[0] == "DaveB" %>
+     				<td><%= link_to player[0], "/poker_players/" + player[0] %> 👑 </td>
+     			<% elsif player[0] == "CJ" %>
+     				<td><%= link_to player[0], "/poker_players/" + player[0] %> 🏆🏆 </td>
+   				<% else %>
+     				<td><%= link_to player[0], "/poker_players/" + player[0] %></td>
+  				<% end %>
+                <td><%= player[1]["elo2"].to_i %></td>
+                <td><%= (player[1]["history"].sum(0.0) / player[1]["history"].size).to_i %></td>
+                <td><%= player[1]["history"].max.to_i %></td>
+                <% color = player[1]["last5"][0].to_i >= 0 ? "bg-success" : "bg-danger" %>
+                <td class=<%= color %>><%= player[1]["last5"][0].to_i %></td>
+                <% color = player[1]["last5"][0..4].sum.to_i >= 0 ? "bg-success" : "bg-danger" %>
+                <td class=<%= color %>><%= player[1]["last5"][0..4].sum.to_i %></td>
+                <% color = player[1]["last5"][0..9].sum.to_i >= 0 ? "bg-success" : "bg-danger" %>
+                <td class=<%= color %>><%= player[1]["last5"][0..9].sum.to_i %></td>
+<!--                 <td><%= player[1]["elo"].to_i %></td> -->
+ 				<td><%= (player[1]["cashout"] - player[1]["buyin"]).to_i %></td>
+				<td><%= player[1]["games"] %></td>
+				<td><%= ((player[1]["cashout"] - player[1]["buyin"]) / (player[1]["buyin"] / 100)).to_i %></td>			</tr>
+		<% end %>
+	</tbody>
+</table>
+</div>
+</div>

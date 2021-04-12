@@ -1,0 +1,104 @@
+<%= render 'layouts/poker_navbar' %>
+<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+	<div class="panel panel-default">
+			<div class="panel-heading panel-heading-custom"> League Leaders (min. 5 games) </div>
+	</div>
+</div>
+</div>
+<div class="row">
+	<div class="col-md-2"></div>
+	
+	<div class="col-md-2">
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom"> Positive Gain Percentage </div>
+		<table class="table table-striped table-dark table-bordered table-sm">
+				<thead>
+						<tr>
+							<th>Player</th>
+                        	<th>%</th>
+						</tr>
+				</thead>
+
+				<tbody>
+					<% @player_positive_percentage.each do |p| %>
+						<tr>
+							<td><%= p[0] %></td>
+							<td><%= number_to_percentage(p[1]["positive_percent"] * 100.0, precision: 0) %></td>
+						</tr>
+					<% end %>
+				</tbody>
+		</table>
+	</div>
+	</div>
+
+	<div class="col-md-2">
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom"> Double Up Percentage </div>
+		<table class="table table-striped table-dark table-bordered table-sm">
+				<thead>
+						<tr>
+							<th>Player</th>
+                        	<th>%</th>
+						</tr>
+				</thead>
+
+				<tbody>
+					<% @double_up_percentage.each do |p| %>
+						<tr>
+							<td><%= p[0] %></td>
+							<td><%= number_to_percentage(p[1]["double_up_percent"] * 100.0, precision: 0) %></td>
+						</tr>
+					<% end %>
+				</tbody>
+		</table>
+	</div>
+	</div>
+
+	<div class="col-md-2">
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom"> Top Gains </div>
+		<table class="table table-striped table-dark table-bordered table-sm">
+				<thead>
+						<tr>
+							<th>Player</th>
+                        	<th>Gain</th>
+						</tr>
+				</thead>
+
+				<tbody>
+					<% @top_gains.each do |p| %>
+						<tr>
+							<td><%= p["name"] %></td>
+							<td><%= p["buyout"] - p["buyin"] %></td>
+						</tr>
+					<% end %>
+				</tbody>
+		</table>
+	</div>
+	</div>
+
+	<div class="col-md-2">
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom"> Busts Per Game </div>
+		<table class="table table-striped table-dark table-bordered table-sm">
+				<thead>
+						<tr>
+							<th>Player</th>
+                        	<th>BPG</th>
+						</tr>
+				</thead>
+
+				<tbody>
+					<% @bankrupts_per_game.each do |p| %>
+						<tr>
+							<td><%= p[0] %></td>
+							<td><%= p[1]["bankrupt_percent"].round(2) %></td>
+						</tr>
+					<% end %>
+				</tbody>
+		</table>
+	</div>
+	</div>
+</div>

@@ -87,7 +87,7 @@
     elsif max_lose_streak == @max_lose_streak
       @max_lose_streak_player = @max_lose_streak_player + ", " + player
     end
-    @player_sos << [player, (strength_of_schedule.inject(0, :+) / strength_of_schedule.size).to_i]
+    @player_sos << [player, (strength_of_schedule.inject(0, :+) / (strength_of_schedule.size.nonzero? || 1)).to_i]
     elo_chart
   end
 
@@ -125,7 +125,7 @@
     @match_history_above_mendoza = create_records(@match_history.select { |game| game.tableelo.split(",").map(&:to_i).inject(0, :+)/4 >= 1200 })
     @match_history_below_mendoza = create_records(@match_history.select { |game| game.tableelo.split(",").map(&:to_i).inject(0, :+)/4 < 1200 })
     @match_history_this_month = create_records(@match_history.select{ |game| game.created_at >= Time.now.at_beginning_of_month.utc })
-    @match_history_last2_months = create_records(@match_history.select{ |game| game.created_at >= Time.now.ago(1.month).at_beginning_of_month.utc })
+    @match_history_last2_months = create_records(@match_history.select{ |game| game.created_at >= Time.now.ago(1.month).at_beginning_of_month.utc && game.created_at < Time.now.at_beginning_of_month.utc})
     @per_month_stats = get_top_winrate_month()
   end
 
@@ -133,8 +133,11 @@
     stats = Hash.new
     games_per_month = Game.all.group_by{ |u| u.created_at.at_beginning_of_month}
     games_per_month.each do |g|
-      matches = create_records(g[1]).select{ |p| (p[1]["wins"] + p[1]["losses"]) > 5}
+      matches = create_records(g[1]).select{ |p| (p[1]["wins"] + p[1]["losses"]) >= 5}
       matches_elo = matches.sort_by{|x,y|y["elogain"]}.reverse
+      if matches.size == 0
+        next
+      end
       hash = {g[0] => {"count" => g[1].count, "top" => matches.first[0], "winrate" => matches.first[1]["winrate"], "bottom" => matches.last[0], "bottom_winrate" => matches.last[1]["winrate"],
         "top_elo" => matches_elo.first[0], "top_elo_diff" => matches_elo.first[1]["elogain"], "bottom_elo" => matches_elo.last[0], 
         "bottom_elo_diff" => matches_elo.last[1]["elogain"]}}

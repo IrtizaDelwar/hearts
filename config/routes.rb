@@ -2,7 +2,11 @@ Rails.application.routes.draw do
   resources :players, param: :name
   resources :games
   resources :league_stats, param: :include_player
-  resources :hearts_ai
+  resources :poker_players, param: :name
+  resources :p_games
+  resources :poker_stats
+  resources :season_rankings, param: :season
+  resources :tournaments
   
   get 'hearts_ladder/hearts'
   get 'players/index'

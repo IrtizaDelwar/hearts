@@ -69,3 +69,7 @@ gem 'auto_increment'
 gem 'execjs'
 gem 'mini_racer', :platforms => :ruby
 gem 'chartkick'
+
+gem 'nested_form'
+gem 'simple_form'
+gem 'cocoon'

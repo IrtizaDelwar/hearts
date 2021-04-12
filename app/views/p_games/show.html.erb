@@ -1,0 +1,43 @@
+<%= render 'layouts/poker_navbar' %>
+
+<div class="col-md-2">
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom">Total Chips</div>
+		<h1>&nbsp;&nbsp;<%= @total_cash %></h1>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom">Average Elo</div>
+		<h1>&nbsp;&nbsp;<%= @match_elo %></h1>
+	</div>
+</div>
+<div class="col-md-10">
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-custom">Chip Percentage</div>
+		<%= pie_chart @game_pie, adapter: "google", library: {pieSliceText: 'value-and-percentage'}, height: "500px" %>
+	</div>
+
+<table class="table table-bordered table-sm">
+	<thead>
+		<tr>
+            <th>Player</th>
+            <th>Buy-Ins</th>
+			<th>Expected Chip Count</th>
+			<th>Actual Chip Count</th>
+			<th>ELO change</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% @player_stats.each_with_index do |player| %>
+		<% color = (player[2] - player[1]).to_i >= 0 ? "bg-success" : "bg-danger" %>
+			<tr class=<%= color %>>
+                <td><%= link_to player[0], "/poker_players/" + player[0] %></td>
+                <td><%= player[6] %></td>
+				<td><%= (player[4] * @total_cash).to_i %></td>
+				<td><%= (player[5] * @total_cash).to_i %></td>
+				<td><%= (player[2] - player[1]).to_i %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+</div>
